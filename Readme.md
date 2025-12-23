@@ -1,14 +1,17 @@
-# Electron AccessDB Typescript React Tailwind
+# Gerenciador de SQL Personalizados
 
-- [x] Electron
-- [x] AccessDB
-- [x] TypeScript
-- [x] ReactJS
-- [x] Tailwind
+v1.0
+- [ ] Criar menu lateral com listagem de todos os SQL;
+- [ ] Criar botão e modal que cria novo SQL;
+- [ ] Layout Tela de execução do SQL com: Nome e Botão para executar;
+- [ ] Caixa que mostra SQL a ser executado no estilo DOS;
+- [ ] Rodar e exibir SQL em Tabela abaixo;
+- [ ] Exportação para .csv;
+- [ ] Loaders no webview e barra de tarefas;
 
-## All commands
-- `npx create-electron-app@latest electron-accessdb-typescript-react-tailwind --template=vite-typescript`
-- `npm install react react-dom`
-- `npm i @vitejs/plugin-react @types/react-dom @types/react --save-dev`
-- Change vite.renderer.conf.ts to vite.renderer.config.mts
-- `npm install -D tailwindcss @tailwindcss/vite`
+v1.1
+- [ ] Perceber e exibir inputs customizados;
+
+v2.0
+- [ ] Salvar SQL em um sqlite;
+- [ ] Inputs avançados pegando de outra tabela;

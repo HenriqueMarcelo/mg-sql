@@ -9,7 +9,9 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "dev": "electron-forge start",
+    "lint": "eslint --ext .ts,.tsx .",
+    "postinstall": "flowbite-react register"
   },
   "keywords": [],
   "author": {
@@ -43,6 +45,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
+    "flowbite-react": "^0.12.14",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   }
