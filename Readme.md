@@ -1,7 +1,7 @@
 # Gerenciador de SQL Personalizados
 
 v1.0
-- [ ] Criar menu lateral com listagem de todos os SQL;
+- [x] Criar menu lateral com listagem de todos os SQL;
 - [ ] Criar botão e modal que cria novo SQL;
 - [ ] Layout Tela de execução do SQL com: Nome e Botão para executar;
 - [ ] Caixa que mostra SQL a ser executado no estilo DOS;
