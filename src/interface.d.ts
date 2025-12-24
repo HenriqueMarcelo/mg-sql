@@ -15,7 +15,6 @@ type DBResponse = {
 declare global {
     interface Window {
         executeSQL: (sql: string) => Promise<DBResponse>;
+        setNativeLoader: (shown: boolean) => void;
     }
 }
-
-export { };

@@ -5,7 +5,7 @@ v1.0
 - [x] Criar botão e modal que cria novo SQL;
 - [x] Layout Tela de execução do SQL com: Nome e Botão para executar;
 - [x] Caixa que mostra SQL a ser executado no estilo DOS;
-- [ ] Loaders no webview e barra de tarefas;
+- [x] Loaders no webview e barra de tarefas;
 - [ ] Rodar e exibir SQL em Tabela abaixo;
 - [ ] Exportação para .csv;
 
@@ -17,3 +17,4 @@ v2.0
 - [ ] Salvar SQL em um sqlite;
 - [ ] Inputs avançados pegando de outra tabela;
 - [ ] Senha para adicionar/excluir SQL;
+- [ ] Últimos SQL executados ao clicar com botão direito na barra de tarefas (estilo spotify)

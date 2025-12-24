@@ -20,7 +20,7 @@ export function RunSql({ sql }: Props) {
             </div>
 
             <div className="p-8">
-                <div className="w-full h-full bg-gray-700 text-white p-6 font-mono overflow-y-auto font-mono rounded-lg cursor-not-allowed">
+                <div className="w-full h-full bg-gray-700 text-white p-6 overflow-y-auto font-mono rounded-lg cursor-not-allowed">
                     <p>{sql.SQL}</p>
                 </div>
                 <div className="mt-4 flex justify-center">

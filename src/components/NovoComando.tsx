@@ -1,8 +1,9 @@
 "use client";
 
 import { Button, Label, Modal, ModalBody, ModalHeader, Spinner, Textarea, TextInput } from "flowbite-react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { LoaderContext } from "../contexts/LoaderContext";
 
 type Props = {
     onCommandSaved: () => void;
@@ -14,7 +15,7 @@ export function NovoComando({ onCommandSaved }: Props) {
     const [sql, setSql] = useState("");
     const [obs, setObs] = useState("");
 
-    const [loading, setLoading] = useState(false);
+    const { shown, showLoader, hideLoader } = useContext(LoaderContext);
 
     function onCloseModal() {
         setOpenModal(false);
@@ -24,7 +25,7 @@ export function NovoComando({ onCommandSaved }: Props) {
     }
 
     const handleNovoComando = useCallback(async () => {
-        setLoading(true);
+        showLoader();
         try {
             const sqlCommand = `INSERT INTO SQL (NomeSQL, OBS, SQL) VALUES ('${nome}', '${obs}', '${sql}')`;
             console.log('Executing SQL Command:', sqlCommand);
@@ -35,13 +36,13 @@ export function NovoComando({ onCommandSaved }: Props) {
         } catch (error) {
             alert('Error executing SQL:' + error);
         } finally {
-            setLoading(false);
+            hideLoader();
         }
     }, [nome, obs, sql, onCommandSaved]);
 
     return (
         <>
-            <Button onClick={() => setOpenModal(true)} color="blue" className="w-full cursor-pointer" disabled={loading}>
+            <Button onClick={() => setOpenModal(true)} color="blue" className="w-full cursor-pointer" disabled={shown}>
                 <IoMdAdd className="mr-2 h-5 w-5" />
                 Adicionar Novo
             </Button>
@@ -81,7 +82,7 @@ export function NovoComando({ onCommandSaved }: Props) {
                         </div>
                         <div className="w-full flex justify-end gap-4">
                             <Button color="green" onClick={handleNovoComando}>
-                                {loading ? <Spinner aria-label="Default status example" /> : 'Salvar'}
+                                {shown ? <Spinner aria-label="Default status example" /> : 'Salvar'}
                             </Button>
                             <Button color="alternative" onClick={() => setOpenModal(false)}>
                                 Cancelar

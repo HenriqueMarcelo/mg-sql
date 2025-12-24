@@ -3,8 +3,9 @@
 
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from "flowbite-react";
 import { NovoComando } from "./NovoComando";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { SQLCommand } from "src/App";
+import { LoaderContext } from "../contexts/LoaderContext";
 
 type Props = {
     setSqlSelecionado: (sql: SQLCommand) => void;
@@ -12,14 +13,18 @@ type Props = {
 
 export function MenuLateral({ setSqlSelecionado }: Props) {
     const [sqls, setSqls] = useState([] as SQLCommand[])
+    const { showLoader, hideLoader } = useContext(LoaderContext);
 
     const handleGetSqls = useCallback(async function handleGetSqls() {
+        showLoader()
         try {
             const response = await window.executeSQL('SELECT * FROM SQL');
             setSqls(response.data as SQLCommand[]);
             console.log('SQL Response:', response);
         } catch (error) {
             console.log('Error executing SQL:', error);
+        } finally {
+            hideLoader()
         }
     }, [setSqls])
 
