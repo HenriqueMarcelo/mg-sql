@@ -3,7 +3,7 @@
 
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from "flowbite-react";
 import { NovoComando } from "./NovoComando";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SQLCommand } from "src/App";
 
 type Props = {
@@ -13,23 +13,25 @@ type Props = {
 export function MenuLateral({ setSqlSelecionado }: Props) {
     const [sqls, setSqls] = useState([] as SQLCommand[])
 
+    const handleGetSqls = useCallback(async function handleGetSqls() {
+        try {
+            const response = await window.executeSQL('SELECT * FROM SQL');
+            setSqls(response.data as SQLCommand[]);
+            console.log('SQL Response:', response);
+        } catch (error) {
+            console.log('Error executing SQL:', error);
+        }
+    }, [setSqls])
+
     useEffect(() => {
-        (async () => {
-            try {
-                const response = await window.executeSQL('SELECT * FROM SQL');
-                setSqls(response.data as SQLCommand[]);
-                console.log('SQL Response:', response);
-            } catch (error) {
-                console.log('Error executing SQL:', error);
-            }
-        })();
-    }, []);
+        handleGetSqls();
+    }, [handleGetSqls]);
 
     return (
         <Sidebar aria-label="Relatórios">
             <SidebarItems>
                 <SidebarItemGroup>
-                    <NovoComando />
+                    <NovoComando onCommandSaved={handleGetSqls} />
                 </SidebarItemGroup>
                 <SidebarItemGroup >
                     {sqls.map((sqlCommand, index) => (

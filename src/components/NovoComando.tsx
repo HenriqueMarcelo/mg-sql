@@ -1,15 +1,20 @@
-
 "use client";
 
-import { Button, Label, Modal, ModalBody, ModalHeader, Textarea, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { Button, Label, Modal, ModalBody, ModalHeader, Spinner, Textarea, TextInput } from "flowbite-react";
+import { useCallback, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 
-export function NovoComando() {
+type Props = {
+    onCommandSaved: () => void;
+}
+
+export function NovoComando({ onCommandSaved }: Props) {
     const [openModal, setOpenModal] = useState(false);
     const [nome, setNome] = useState("");
     const [sql, setSql] = useState("");
     const [obs, setObs] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
     function onCloseModal() {
         setOpenModal(false);
@@ -18,9 +23,25 @@ export function NovoComando() {
         setObs("");
     }
 
+    const handleNovoComando = useCallback(async () => {
+        setLoading(true);
+        try {
+            const sqlCommand = `INSERT INTO SQL (NomeSQL, OBS, SQL) VALUES ('${nome}', '${obs}', '${sql}')`;
+            console.log('Executing SQL Command:', sqlCommand);
+            const response = await window.executeSQL(sqlCommand);
+            console.log('SQL Response:', response);
+            onCloseModal();
+            onCommandSaved();
+        } catch (error) {
+            alert('Error executing SQL:' + error);
+        } finally {
+            setLoading(false);
+        }
+    }, [nome, obs, sql, onCommandSaved]);
+
     return (
         <>
-            <Button onClick={() => setOpenModal(true)} color="blue" className="w-full cursor-pointer">
+            <Button onClick={() => setOpenModal(true)} color="blue" className="w-full cursor-pointer" disabled={loading}>
                 <IoMdAdd className="mr-2 h-5 w-5" />
                 Adicionar Novo
             </Button>
@@ -59,8 +80,12 @@ export function NovoComando() {
                             <Textarea id="sql" rows={4} placeholder="Escreva seu comando SQL aqui..." value={sql} onChange={(event) => setSql(event.target.value)} />
                         </div>
                         <div className="w-full flex justify-end gap-4">
-                            <Button color="green">Salvar</Button>
-                            <Button color="alternative" onClick={() => setOpenModal(false)}>Cancelar</Button>
+                            <Button color="green" onClick={handleNovoComando}>
+                                {loading ? <Spinner aria-label="Default status example" /> : 'Salvar'}
+                            </Button>
+                            <Button color="alternative" onClick={() => setOpenModal(false)}>
+                                Cancelar
+                            </Button>
                         </div>
                     </div>
                 </ModalBody>
