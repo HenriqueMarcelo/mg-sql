@@ -1,9 +1,9 @@
 import { Button } from "flowbite-react";
-import { useCallback, useContext, useState } from "react";
-import { FaPlay } from "react-icons/fa";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { FaFileDownload, FaPlay } from "react-icons/fa";
 import { SQLCommand } from "src/App";
 import { LoaderContext } from "../contexts/LoaderContext";
-import { DBResponse } from "src/interface";
+import { DBData, DBResponse } from "src/interface";
 import { TableResultado } from "./TableResultado";
 
 type Props = {
@@ -13,6 +13,10 @@ type Props = {
 export function RunSql({ sql }: Props) {
     const { showLoader, hideLoader } = useContext(LoaderContext);
     const [response, setResponse] = useState<DBResponse | undefined>()
+
+    useEffect(() => {
+        setResponse(undefined)
+    }, [sql])
 
     const runCommand = useCallback(async function handleGetSqls() {
         showLoader()
@@ -26,6 +30,32 @@ export function RunSql({ sql }: Props) {
             hideLoader()
         }
     }, [sql, setResponse])
+
+    const generateCSV = (data: DBData[]): string => {
+        const headers = Object.keys(data[0]).join(";");
+        const rows = data.map(row => Object.values(row).join(";")).join("\n");
+        return `${headers}\n${rows}`;
+    };
+
+    const downloadCSV = useCallback(() => {
+        showLoader()
+        if (!response.data || response.data.length === 0) {
+            console.error("No data available to export.");
+            return;
+        }
+
+        const csvContent = generateCSV(response.data);
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${sql.NomeSQL.trim() || "export"}.csv`);
+        document.body.appendChild(link);
+        hideLoader();
+        link.click();
+        document.body.removeChild(link);
+    }, [response, sql]);
 
     return (
 
@@ -45,8 +75,9 @@ export function RunSql({ sql }: Props) {
                 <p>{sql.SQL}</p>
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-4">
                 <Button color="green" className="inline-flex gap-2 cursor-pointer" size="xl" onClick={runCommand}>Executar <FaPlay /></Button>
+                <Button color="blue" className="inline-flex gap-2 cursor-pointer" size="xl" onClick={downloadCSV}>Exportar para CSV <FaFileDownload /></Button>
             </div>
 
             {response && <TableResultado data={response} />}

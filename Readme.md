@@ -7,7 +7,7 @@ v1.0
 - [x] Caixa que mostra SQL a ser executado no estilo DOS;
 - [x] Loaders no webview e barra de tarefas;
 - [x] Rodar e exibir SQL em Tabela abaixo;
-- [ ] Exportação para .csv;
+- [x] Exportação para .csv;
 - [ ] Otimização em query com muitas linhas;
 - [ ] Position stick no header da tabela;
 
