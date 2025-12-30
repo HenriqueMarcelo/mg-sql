@@ -17,10 +17,10 @@ export function Router() {
     return (
         <>
             {shown && <LoaderLine />}
-            <div className="w-full h-screen flex justify-between">
+            <div className="w-screen h-screen flex justify-start ">
                 <MenuLateral setSqlSelecionado={setSqlSelecionado} />
                 {sqlSelecionado ? <RunSql sql={sqlSelecionado} /> : (
-                    <section className="flex flex-1 justify-center items-center text-gray-500 text-xl p-4">
+                    <section className="flex flex-1 text-center justify-center items-center text-gray-500 text-xl p-4 overflow-auto">
                         Selecione um comando no menu ao lado ou crie um novo!
                     </section>
                 )}

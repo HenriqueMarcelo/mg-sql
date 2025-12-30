@@ -6,8 +6,11 @@ v1.0
 - [x] Layout Tela de execução do SQL com: Nome e Botão para executar;
 - [x] Caixa que mostra SQL a ser executado no estilo DOS;
 - [x] Loaders no webview e barra de tarefas;
-- [ ] Rodar e exibir SQL em Tabela abaixo;
+- [x] Rodar e exibir SQL em Tabela abaixo;
 - [ ] Exportação para .csv;
+- [ ] Otimização em query com muitas linhas;
+- [ ] Position stick no header da tabela;
+
 
 v1.1
 - [ ] Perceber e exibir inputs customizados;
