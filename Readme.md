@@ -8,7 +8,7 @@ v1.0
 - [x] Loaders no webview e barra de tarefas;
 - [x] Rodar e exibir SQL em Tabela abaixo;
 - [x] Exportação para .csv;
-- [ ] Otimização em query com muitas linhas;
+- [x] Otimização em query com muitas linhas;
 - [ ] Position stick no header da tabela;
 
 
