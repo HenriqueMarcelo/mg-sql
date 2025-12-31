@@ -14,8 +14,8 @@ v1.0
 
 v1.1
 - [x] Perceber e exibir inputs customizados;
-- [ ] Editar SQL;
-- [ ] Excluir SQL;
+- [x] Editar SQL;
+- [x] Excluir SQL;
 
 v2.0
 - [ ] Salvar SQL em um sqlite;

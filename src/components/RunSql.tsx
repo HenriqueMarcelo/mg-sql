@@ -112,7 +112,7 @@ export function RunSql({ sql }: Props) {
                 </h1>
                 <div className="flex gap-4">
                     <ExcluirComando sql={sql} onCommandRemoved={() => { window.location.reload() }} />
-                    {/* <EditarComando onCommandSaved={() => { }} /> */}
+                    <EditarComando sql={sql} onCommandUpdated={() => { window.location.reload() }} />
                     <Button color="blue" className="inline-flex gap-2 cursor-pointer" disabled={!response} onClick={downloadCSV}>Exportar para CSV <FaFileDownload /></Button>
                     <Button color="green" className="inline-flex gap-2 cursor-pointer" onClick={runCommand}>Executar <FaPlay /></Button>
                 </div>
