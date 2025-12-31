@@ -1,10 +1,11 @@
 import { Button } from "flowbite-react";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { FaFileDownload, FaPlay } from "react-icons/fa";
 import { SQLCommand } from "src/App";
 import { LoaderContext } from "../contexts/LoaderContext";
 import { DBData, DBResponse } from "src/interface";
 import { TableResultado } from "./TableResultado";
+import { Variaveis } from "./Variaveis";
 
 type Props = {
     sql: SQLCommand;
@@ -13,15 +14,54 @@ type Props = {
 export function RunSql({ sql }: Props) {
     const { showLoader, hideLoader } = useContext(LoaderContext);
     const [response, setResponse] = useState<DBResponse | undefined>()
+    const [variaveisValue, setVariaveisValue] = useState([] as string[])
 
     useEffect(() => {
         setResponse(undefined)
+        setVariaveisValue([])
     }, [sql])
+
+
+    const sqlComVariaveisPreenchidas = useMemo(() => {
+        const matches = sql.SQL.match(/\{(.*?)\}/g);
+        if (matches && variaveisValue.length > 0) {
+            let result = sql.SQL;
+            matches.forEach((match, index) => {
+                const variableName = match.replace(/[{}]/g, "");
+                const value = variaveisValue[index];
+                result = result.replace(new RegExp(`\\{${variableName}\\}`, "g"), value);
+            });
+            return result;
+        }
+        return sql.SQL;
+    }, [sql.SQL, variaveisValue])
+
+    const sqlComVariaveisPreenchidasVisual = useMemo(() => {
+        const matches = sql.SQL.match(/\{(.*?)\}/g);
+        if (matches) {
+            let result = sql.SQL;
+            matches.forEach((match, index) => {
+                const variableName = match.replace(/[{}]/g, "");
+                const value = variaveisValue[index] ? variaveisValue[index] : '&nbsp;';
+                result = result.replace(new RegExp(`\\{${variableName}\\}`, "g"), '<strong class="text-gray-900 bg-purple-300 inline-block px-2">' + value + '</strong>');
+            });
+            return result;
+        }
+        return sql.SQL;
+    }, [sql.SQL, variaveisValue])
+
+    function changeVariableValue(value: string, index: number) {
+        setVariaveisValue((values) => {
+            const newValues = [...values];
+            newValues[index] = value;
+            return newValues;
+        });
+    }
 
     const runCommand = useCallback(async function handleGetSqls() {
         showLoader()
         try {
-            const respondeDB = await window.executeSQL(sql.SQL);
+            const respondeDB = await window.executeSQL(sqlComVariaveisPreenchidas);
             setResponse(respondeDB);
             console.log('SQL Response:', respondeDB);
         } catch (error) {
@@ -29,7 +69,7 @@ export function RunSql({ sql }: Props) {
         } finally {
             hideLoader()
         }
-    }, [sql, setResponse])
+    }, [sqlComVariaveisPreenchidas, setResponse])
 
     const generateCSV = (data: DBData[]): string => {
         const headers = Object.keys(data[0]).join(";");
@@ -68,17 +108,17 @@ export function RunSql({ sql }: Props) {
                     </span>
                     <small className="text-sm font-normal">{sql.OBS}</small>
                 </h1>
-                <Button color="green" className="inline-flex gap-2 cursor-pointer" onClick={runCommand}>Executar <FaPlay /></Button>
+                <div className="flex gap-4">
+                    <Button color="blue" className="inline-flex gap-2 cursor-pointer" disabled={!response} onClick={downloadCSV}>Exportar para CSV <FaFileDownload /></Button>
+                    <Button color="green" className="inline-flex gap-2 cursor-pointer" onClick={runCommand}>Executar <FaPlay /></Button>
+                </div>
             </header>
 
             <div className="w-full min-h-24 bg-gray-700 text-white p-6 overflow-y-auto font-mono rounded-lg cursor-not-allowed">
-                <p>{sql.SQL}</p>
+                <p dangerouslySetInnerHTML={{ __html: sqlComVariaveisPreenchidasVisual }} />
             </div>
 
-            <div className="flex justify-center gap-4">
-                <Button color="green" className="inline-flex gap-2 cursor-pointer" size="xl" onClick={runCommand}>Executar <FaPlay /></Button>
-                <Button color="blue" className="inline-flex gap-2 cursor-pointer" size="xl" onClick={downloadCSV}>Exportar para CSV <FaFileDownload /></Button>
-            </div>
+            <Variaveis sql={sql.SQL} onChange={changeVariableValue} />
 
             {response && <TableResultado data={response} />}
         </div>

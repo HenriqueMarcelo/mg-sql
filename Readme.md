@@ -9,11 +9,12 @@ v1.0
 - [x] Rodar e exibir SQL em Tabela abaixo;
 - [x] Exportação para .csv;
 - [x] Otimização em query com muitas linhas;
-- [ ] Position stick no header da tabela;
+- [x] Position stick no header da tabela;
 
 
 v1.1
-- [ ] Perceber e exibir inputs customizados;
+- [x] Perceber e exibir inputs customizados;
+- [ ] Editar SQL;
 - [ ] Excluir SQL;
 
 v2.0
@@ -21,3 +22,6 @@ v2.0
 - [ ] Inputs avançados pegando de outra tabela;
 - [ ] Senha para adicionar/excluir SQL;
 - [ ] Últimos SQL executados ao clicar com botão direito na barra de tarefas (estilo spotify)
+
+v3.0
+- [ ] Gerar gráficos a partir dos resultados;
