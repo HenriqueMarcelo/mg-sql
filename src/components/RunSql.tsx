@@ -1,11 +1,13 @@
 import { Button } from "flowbite-react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { FaFileDownload, FaPlay } from "react-icons/fa";
+import { FaEdit, FaFileDownload, FaPlay } from "react-icons/fa";
 import { SQLCommand } from "src/App";
 import { LoaderContext } from "../contexts/LoaderContext";
 import { DBData, DBResponse } from "src/interface";
 import { TableResultado } from "./TableResultado";
 import { Variaveis } from "./Variaveis";
+import { EditarComando } from "./EditarComando";
+import { ExcluirComando } from "./ExcluirComando";
 
 type Props = {
     sql: SQLCommand;
@@ -109,6 +111,8 @@ export function RunSql({ sql }: Props) {
                     <small className="text-sm font-normal">{sql.OBS}</small>
                 </h1>
                 <div className="flex gap-4">
+                    <ExcluirComando sql={sql} onCommandRemoved={() => { window.location.reload() }} />
+                    {/* <EditarComando onCommandSaved={() => { }} /> */}
                     <Button color="blue" className="inline-flex gap-2 cursor-pointer" disabled={!response} onClick={downloadCSV}>Exportar para CSV <FaFileDownload /></Button>
                     <Button color="green" className="inline-flex gap-2 cursor-pointer" onClick={runCommand}>Executar <FaPlay /></Button>
                 </div>
